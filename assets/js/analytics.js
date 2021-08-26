@@ -1,12 +1,26 @@
-// Check if browser support service worker
+// Script to Track Traffic
 
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("/sw.js").then(() => {
-    console.log("Service Worker Registered");
+$.get("https://www.cloudflare.com/cdn-cgi/trace", function (data) {
+  // Convert key-value pairs to JSON
+  data = data
+    .trim()
+    .split("\n")
+    .reduce(function (obj, pair) {
+      pair = pair.split("=");
+      return (obj[pair[0]] = pair[1]), obj;
+    }, {});
+
+  // stringify data
+  data = JSON.stringify(data);
+
+  // send data to statsbase
+  $.ajax({
+    type: "POST",
+    url: "https://statbase.herokuapp.com/api/iplist",
+    contentType: "application/json; charset=utf-8",
+    data: data,
   });
-} else {
-  console.log("Service Worker is not supported");
-}
+});
 
 //             |\                         /|
 //             | \                       / |
