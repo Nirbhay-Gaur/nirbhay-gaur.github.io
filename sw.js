@@ -1,6 +1,7 @@
 const cacheArr = [
   "/",
   "/images/bg.webp",
+  "/images/aim-trainer.gif",
   "/images/face.png",
   "/images/overlay.png",
   "/images/whoami.gif",
